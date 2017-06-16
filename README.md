@@ -5,3 +5,8 @@ The carSpd (name in progress) is a work in progress device used to display your 
 My main motivation for starting this project is so that I wont have to read the tiny kph numbers on my car's speedometer, since I just moved to Canada from the US with my car.
 
 *This project is meant to be some kind of successor to the canceled carbt_v1 project. While their main functions are very different, they both serve the purpose of improving or adding new functions to my car.*
+
+## Used Libraries
+[Button](https://github.com/JChristensen/Button)
+[EEPROMEx](https://github.com/thijse/Arduino-EEPROMEx)
+[ST7032](https://github.com/tomozh/arduino_ST7032)
