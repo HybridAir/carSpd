@@ -15,6 +15,8 @@ void printSpeed(byte speed);
 void incContrast();
 void decContrast();
 
+void initSettings();
+void initEepromValues();
 void checkButtons();
 
 #endif

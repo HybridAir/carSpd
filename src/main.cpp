@@ -1,12 +1,12 @@
-
+// carSpd main, currently being tested on an arduino uno
 #include "main.h"
 
 
 void setup() {
+    Serial.begin(9600);
     displayInit();
     carInit();
-
-    pinMode(13, OUTPUT);                                                        // set pin to input
+    initSettings();
 }
 
 
@@ -15,4 +15,3 @@ void loop() {
     checkButtons();
 
 }
-//sdrtdfhfghdf
