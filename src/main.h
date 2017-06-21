@@ -21,7 +21,7 @@ void setView(byte indexInput);
 void initSettings();
 void initReadEeprom();
 void checkButtons();
-void initEepromValues();
+void resetEeprom();
 void setLightMode(bool modeInput);
 void setBrightness(byte newBrightness);
 

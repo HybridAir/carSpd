@@ -35,8 +35,16 @@ byte defaultEepromVals[6] = {0x00, 0x00, 0x1e, 0x01, 0x00};
 
 
 void initSettings() {
-    //initEepromValues();       // eeprom init test code
-    initReadEeprom();
+
+    // reset the eeprom to default values if a specific button is held during boot
+    btn4.read();
+    if(btn4.isPressed()) {
+        resetEeprom();       // eeprom init test code
+    }
+    else {
+        initReadEeprom();
+    }
+    
 }
 
 
@@ -97,8 +105,8 @@ void checkButtons() {
 }
 
 
-// used to write initial eeprom values, remove in production
-void initEepromValues() {
+// used to write initial default eeprom values
+void resetEeprom() {
     for(byte i = 0; i < sizeof(defaultEepromVals); i++) {
         EEPROM.writeByte(i, defaultEepromVals[i]);                              // write each byte in the data value array to the eeprom
 
