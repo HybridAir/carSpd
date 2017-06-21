@@ -1,4 +1,4 @@
-//handles all user input and control stuff (buttons, settings, eeprom, etc)
+//handles all user input and control stuff (buttons, settings, eeprom, backlight, etc)
 
 #include "main.h"
 #include <Button.h>
@@ -20,31 +20,50 @@ Button btn3(BUTTON3_PIN, PULLUP, INVERT, DEBOUNCE_MS);
 Button btn4(BUTTON4_PIN, PULLUP, INVERT, DEBOUNCE_MS);
 
 
-// eeprom data array, 5 different values are stored, each using a byte of space
-// speedUnit bool, lastViewIndex, contrast, lightMode, lightLevel
-byte dataValues[6] = {0x00, 0x00, 0x1e, 0x00, 0x00};
+// backlight control variables
+bool autoBacklight = true;                                                      // default to auto backlight control mode
+
+
+// default eeprom data array, 5 different values are stored, each using a byte of space
+// speedUnit bool, lastViewIndex, contrast, lightMode bool, lightLevel
+#define SPEEDUNIT_ADDRESS   0
+#define LASTVIEWINDEX_ADDRESS   1
+#define CONTRAST_ADDRESS   2
+#define LIGHTMODE_ADDRESS   3
+#define LIGHTLEVEL_ADDRESS   4
+byte defaultEepromVals[6] = {0x00, 0x00, 0x1e, 0x01, 0x00};
 
 
 void initSettings() {
     //initEepromValues();       // eeprom init test code
+    initReadEeprom();
 }
 
 
-// used to write initial eeprom values, remove in production
-void initEepromValues() {
-    for(byte i = 0; i < sizeof(dataValues); i++) {
-        EEPROM.writeByte(i, dataValues[i]);   // write each byte in the data value array to the eeprom
-
-        byte output = EEPROM.read(i); // same function as readByte
-
-        Serial.print("adress: ");
-        Serial.println(i, DEC);
-        Serial.print("input: ");
-        Serial.println(dataValues[i], HEX);
-        Serial.print("output: ");
-        Serial.println(output, HEX);
-        Serial.println("");
-
+// reads all the settings out from eeprom, and sets initial variables, run at boot
+void initReadEeprom() {
+    // for each possible stored byte
+    for(byte i = 0; i < sizeof(defaultEepromVals); i++) {
+        // read each byte into its corresponding function
+        switch(i) {
+        case SPEEDUNIT_ADDRESS:                                                 // address 0: speed unit (mph/kph), as a bool
+            setSpeedUnit(EEPROM.read(i));
+            break;
+        case LASTVIEWINDEX_ADDRESS:                                             // address 1: last displayed view index number, as a byte
+            setView(EEPROM.read(i));
+            break;
+        case CONTRAST_ADDRESS:                                                  // address 2: display contrast, as a byte
+            setContrast(EEPROM.read(i));
+            break;
+        case LIGHTMODE_ADDRESS:                                                 // address 3: backlight mode (auto/manual), as a bool
+            setLightMode(EEPROM.read(i));
+            break;
+        case LIGHTLEVEL_ADDRESS:                                                //address 4: backlight brightness level, as a byte
+            setBrightness(EEPROM.read(i));
+            break;
+        default:
+            break;
+        }
     }
 }
 
@@ -62,17 +81,48 @@ void checkButtons() {
     }
 
     if(btn2.wasPressed()) {
-        incContrast();
+        EEPROM.writeByte(CONTRAST_ADDRESS, incContrast());                      // set the contrast and save it
     }
 
     if(btn3.wasPressed()) {
-        decContrast();
+        EEPROM.writeByte(CONTRAST_ADDRESS, decContrast());                      // set the contrast and save it
     }
 
-    if(btn4.isPressed()) {
+    if(btn4.isPressed()) {                                                      // debug code
         digitalWrite(13, HIGH);
     }
     else {
         digitalWrite(13, LOW);
     }
+}
+
+
+// used to write initial eeprom values, remove in production
+void initEepromValues() {
+    for(byte i = 0; i < sizeof(defaultEepromVals); i++) {
+        EEPROM.writeByte(i, defaultEepromVals[i]);                              // write each byte in the data value array to the eeprom
+
+        byte output = EEPROM.read(i);                                           // same function as readByte
+
+        Serial.print("adress: ");
+        Serial.println(i, DEC);
+        Serial.print("input: ");
+        Serial.println(defaultEepromVals[i], HEX);
+        Serial.print("output: ");
+        Serial.println(output, HEX);
+        Serial.println("");
+
+    }
+}
+
+
+// sets the current backlight mode to auto or manual, true for auto
+void setLightMode(bool modeInput) {
+    autoBacklight = modeInput;
+}
+
+
+// sets the backlight to a specific brightness
+void setBrightness(byte newBrightness) {
+    // just a placeholder right now
 }

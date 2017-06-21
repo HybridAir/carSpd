@@ -111,3 +111,10 @@ void betterSpeed() {
         bitSet(TCCR1B, CS11);                                                   // Clock on rising edge
     }
 }
+
+
+// sets the speed unit of measurement to mph or kph
+void setSpeedUnit(bool inputUnit) {
+    isMph = inputUnit;
+    // tell the display to update to the new unit or something here
+}

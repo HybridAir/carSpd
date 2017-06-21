@@ -3,10 +3,11 @@
 
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(9600);     // used for debug and testing
+
+    initSettings();
     displayInit();
     carInit();
-    initSettings();
 }
 
 
