@@ -9,6 +9,7 @@ My main motivation for starting this project is so that I wont have to read the 
 ## Todo
 Before PCB completion
 - DS3231 hardware support
+
 After
 - DS3231 software support (I don't have one on hand to test, shipping will take a while)
 - Injector reading (non-priority)
