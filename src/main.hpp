@@ -13,11 +13,12 @@ bool getSpeedUnit();
 uint8_t getSpeed();
 void setSpeedUnit(bool inputUnit);
 
+// display public prototypes
 void displayInit();
 void printSpeed(byte speed);
 void setContrast(byte contrastInput);
-byte incContrast();
-byte decContrast();
+unit8_t incContrast();
+unit8_t decContrast();
 void setView(byte indexInput);
 
 void initSettings();

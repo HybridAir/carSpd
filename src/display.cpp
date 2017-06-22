@@ -1,15 +1,8 @@
 // handles all display related tasks
-#include "main.hpp"
-#include <Wire.h>
-#include <ST7032.h>
-
-#define CONTRASTMAX     48
-#define CONTRASTMIN     16
+#include "display.hpp"
 
 ST7032 lcd;
 
-byte contrastValue = 30;
-byte currentView = 0;       // the currently displayed view index
 
 //initializes the display system
 void displayInit() {
@@ -51,7 +44,7 @@ void setContrast(byte contrastInput) {
 
 
 // increases the contrast within the allowed range, and returns the new value
-byte incContrast() {
+unit8_t incContrast() {
     if(contrastValue >= CONTRASTMIN && contrastValue < CONTRASTMAX) {
         contrastValue += 1;
     }
@@ -63,7 +56,7 @@ byte incContrast() {
 
 
 // decreases the contrast within the allowed range, and returns the new value
-byte decContrast() {
+unit8_t decContrast() {
     if(contrastValue > CONTRASTMIN && contrastValue <= CONTRASTMAX) {
         contrastValue -= 1;
     }
