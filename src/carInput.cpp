@@ -1,30 +1,4 @@
-//#include "carInput.h"
-#include "main.h"
-
-
-
-// VSS variables
-const int vssInputPin = 5;                                                      // vss input pin
-const int samplePeriod = 1000;                                                  // how long to get vss samples for, the longer the more accurate
-const float pulsesPerMile = 4000;                                               // vss pulses per mile, my oldsmobile alero does 4000
-const float convertMph = pulsesPerMile/3600;                                    // 3600 seconds in an hour, since miles per *hour*
-unsigned int count;
-float mph;
-unsigned int imph;
-int roundedMph;
-int previousMph;
-int prevCount;
-
-int index = 0;                                                                  // the index of the current reading
-int total = 0;                                                                  // the running total
-int average = 3;
-
-int speedOut = 0;
-
-bool isMph = false;
-
-
-unsigned long lastSpeedTime = 0;
+#include "carInput.h"
 
 
 void carInit() {
@@ -34,8 +8,8 @@ void carInit() {
 }
 
 
-
-void toggleSpeedType() {
+// toggles the currently shown speed unit (mph/kph)
+void toggleSpeedUnit() {
     if(isMph) {
         isMph = false;
     }
@@ -44,32 +18,37 @@ void toggleSpeedType() {
     }
 }
 
-bool getSpeedType() {
+
+// returns the current speed Unit
+bool getSpeedUnit() {
     return isMph;
 }
 
-byte getSpeed() {
+
+// returns the current speed
+uint8_t getSpeed() {
     return speedOut;
 }
 
 
-//non blocking speed tester
+// calculates the vehicle speed over the last samplePeriod (usually a second), run this often
+// it uses timer 1, which is on arduino uno pin 5, connect it to your car's VSS output
 void betterSpeed() {
 
     //sample the speed for samplePeriod, and only calculate after that samplePeriod has elapsed
     if(millis() - lastSpeedTime >= samplePeriod) {
-        TCCR1B = 0;                                                             // stop counting
-        count = TCNT1;                                                          // Store the hardware counter in a variable
-        TCNT1 = 0;                                                              // Reset hardware counter to zero
+        TCCR1B = 0;                                                             // stop counting VSS pulses
+        uint16_t count = TCNT1;                                                 // Store the hardware VSS pulse counter in a variable
+        TCNT1 = 0;                                                              // Reset hardware VSS pulse counter to zero
 
-        mph = (count/convertMph)*10;                                            // Convert pulse count into mph.
+        float mph = (count/convertMph)*10;                                      // Convert pulse count into mph.
         if(!isMph) {
-            mph = mph * 1.609;                                         // Convert pulse count into mph.
+            mph = mph * 1.609;                                                  // and then convert it to kph if necessary
         }
-        imph = (unsigned int) mph;                                              // Cast to integer. 10x allows retaining 10th of mph resolution.
+        uint16_t imph = (uint16_t) mph;                                         // Cast to integer. 10x allows retaining 10th of mph resolution.
 
-        int x = imph / 10;
-        int y = imph % 10;
+        uint16_t x = imph / 10;
+        uint16_t y = imph % 10;
 
         // Round to whole mile per hour
         if(y >= 5) {
@@ -89,24 +68,16 @@ void betterSpeed() {
         // previous reading because it is probably a spurious reading.
         // Accelerating 60mph in one second is rocketship fast so it is probably
         // not real.
-        //lcd.clear();
-        //lcd.print("current mph:");
 
         if((roundedMph - previousMph) > 60) {
-            //lcd.setCursor(0, 1);
-            //lcd.print(previousMph);
             speedOut = previousMph;
         }else{
-            //lcd.setCursor(0, 1);
-            //lcd.print(roundedMph);
             speedOut = roundedMph;
         }
 
         printSpeed(getSpeed());
         previousMph = roundedMph;                                               // Set previousMph for use in next loop
         lastSpeedTime = millis();
-
-
         bitSet(TCCR1B, CS12);                                                   // start counting pulses
         bitSet(TCCR1B, CS11);                                                   // Clock on rising edge
     }

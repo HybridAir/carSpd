@@ -23,7 +23,7 @@ void displayInit() {
 
 void printSpeed(byte speed) {
     lcd.setCursor(0, 0);
-    if(getSpeedType()) {
+    if(getSpeedUnit()) {
         lcd.print("current mph:");
     }
     else {

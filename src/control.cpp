@@ -12,7 +12,7 @@
 #define BUTTON4_PIN 9
 #define PULLUP true
 #define INVERT true
-#define DEBOUNCE_MS 30
+#define DEBOUNCE_MS 35
 
 Button btn1(BUTTON1_PIN, PULLUP, INVERT, DEBOUNCE_MS);
 Button btn2(BUTTON2_PIN, PULLUP, INVERT, DEBOUNCE_MS);
@@ -44,7 +44,7 @@ void initSettings() {
     else {
         initReadEeprom();
     }
-    
+
 }
 
 
@@ -84,7 +84,7 @@ void checkButtons() {
 
 
     if(btn1.wasPressed()) {
-        toggleSpeedType();
+        toggleSpeedUnit();
         printSpeed(getSpeed());
     }
 

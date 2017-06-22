@@ -2,13 +2,15 @@
 #define MAIN_H
 
 #include "Arduino.h"
+#include <stdint.h>
 
+
+// carInput public prototypes
 void carInit();
-void speedtest();
 void betterSpeed();
-void toggleSpeedType();
-bool getSpeedType();
-byte getSpeed();
+void toggleSpeedUnit();
+bool getSpeedUnit();
+uint8_t getSpeed();
 void setSpeedUnit(bool inputUnit);
 
 void displayInit();
