@@ -6,7 +6,18 @@ My main motivation for starting this project is so that I wont have to read the 
 
 *This project is meant to be some kind of successor to the canceled carbt_v1 project. While their main functions are very different, they both serve the purpose of improving or adding new functions to my car.*
 
+## Todo
+- Before PCB completion
+..- DS3231 hardware support
+- After
+..- DS3231 software support (I don't have one on hand to test, shipping will take a while)
+..- Injector reading (non-priority)
+
 ## Used Libraries
 [Button](https://github.com/JChristensen/Button)
+
 [EEPROMEx](https://github.com/thijse/Arduino-EEPROMEx)
+
 [ST7032](https://github.com/tomozh/arduino_ST7032)
+
+[RTC](https://github.com/Makuna/Rtc)
