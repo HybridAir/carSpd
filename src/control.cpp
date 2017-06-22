@@ -1,6 +1,6 @@
 //handles all user input and control stuff (buttons, settings, eeprom, backlight, etc)
 
-#include "main.h"
+#include "main.hpp"
 #include <Button.h>
 #include <EEPROMex.h>
 

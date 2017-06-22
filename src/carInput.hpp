@@ -1,7 +1,7 @@
-#ifndef CARINPUT_H
-#define CARINPUT_H
+#ifndef CARINPUT_HPP
+#define CARINPUT_HPP
 
-#include "main.h"
+#include "main.hpp"
 
 // speed calc variables
 const uint16_t samplePeriod = 1000;                                             // how long to get vss samples for, the longer the more accurate

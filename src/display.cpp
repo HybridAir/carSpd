@@ -1,5 +1,5 @@
 // handles all display related tasks
-#include "main.h"
+#include "main.hpp"
 #include <Wire.h>
 #include <ST7032.h>
 
