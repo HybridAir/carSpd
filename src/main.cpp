@@ -5,7 +5,7 @@
 void setup() {
     Serial.begin(9600);     // used for debug and testing
 
-    initSettings();
+    controlInit();
     displayInit();
     carInit();
 }

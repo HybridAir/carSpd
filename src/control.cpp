@@ -1,5 +1,4 @@
-//handles all user input and control stuff (buttons, settings, eeprom, backlight, etc)
-
+//handles all input and control stuff (buttons, settings, eeprom, backlight, etc)
 #include "control.hpp"
 
 
@@ -9,59 +8,58 @@ Button btn2(BUTTON2_PIN, PULLUP, INVERT, DEBOUNCE_MS);
 Button btn3(BUTTON3_PIN, PULLUP, INVERT, DEBOUNCE_MS);
 Button btn4(BUTTON4_PIN, PULLUP, INVERT, DEBOUNCE_MS);
 
+RunningAverage backlightAvg(10);
+
 
 // init
-void initSettings() {
-
-    // reset the eeprom to default values if a specific button is held during boot
+void controlInit() {
     btn4.read();
-    if(btn4.isPressed()) {
-        resetEeprom();                                                          // eeprom init test code
+    if(btn4.isPressed()) {                                                      // reset the eeprom to default values if a specific button is held during boot
+        resetEeprom();
     }
-    else {
+    else {                                                                      // else, get the existing settings out of eeprom
         initReadEeprom();
     }
 
     pinMode(BACKLIGHT_PIN, OUTPUT);
-
 }
 
 
+// monitors everything, run this often
 void monitorIO() {
     checkButtons();
-    monitorLighting();
+    runAutoBacklight();
 }
 
 
-// reads all the settings out from eeprom, and sets initial variables, run at boot
+// reads all the settings out from eeprom, and sets initial variables
 void initReadEeprom() {
-    // for each possible stored byte
-    for(byte i = 0; i < sizeof(defaultEepromVals); i++) {
+    for(byte i = 0; i < sizeof(defaultEepromVals); i++) {                       // for each possible stored byte
         // read each byte into its corresponding function
         switch(i) {
-        case SPEEDUNIT_ADDRESS:                                                 // address 0: speed unit (mph/kph), as a bool
-            setSpeedUnit(EEPROM.read(i));
-            break;
-        case LASTVIEWINDEX_ADDRESS:                                             // address 1: last displayed view index number, as a byte
-            setView(EEPROM.read(i));
-            break;
-        case CONTRAST_ADDRESS:                                                  // address 2: display contrast, as a byte
-            setContrast(EEPROM.read(i));
-            break;
-        case LIGHTMODE_ADDRESS:                                                 // address 3: backlight mode (auto/manual), as a bool
-            setLightMode(EEPROM.read(i));
-            break;
-        case LIGHTLEVEL_ADDRESS:                                                //address 4: backlight brightness level, as a byte
-            setBrightness(EEPROM.read(i));
-
-            break;
-        default:
-            break;
+            case SPEEDUNIT_ADDRESS:                                             // address 0: speed unit (mph/kph), as a bool
+                setSpeedUnit(EEPROM.read(i));
+                break;
+            case LASTVIEWINDEX_ADDRESS:                                         // address 1: last displayed view index number, as a byte
+                setView(EEPROM.read(i));
+                break;
+            case CONTRAST_ADDRESS:                                              // address 2: display contrast, as a byte
+                setContrast(EEPROM.read(i));
+                break;
+            case LIGHTMODE_ADDRESS:                                             // address 3: backlight mode (auto/manual), as a bool
+                setLightMode(EEPROM.read(i));
+                break;
+            case LIGHTLEVEL_ADDRESS:                                            //address 4: backlight brightness level, as a byte
+                setBrightness(EEPROM.read(i));
+                break;
+            default:
+                break;
         }
     }
 }
 
 
+// reads button states and does things as necessary
 void checkButtons() {
     btn1.read();
     btn2.read();
@@ -84,7 +82,7 @@ void checkButtons() {
         //EEPROM.writeByte(CONTRAST_ADDRESS, decContrast());                      // set the contrast and save it
     }
 
-    if(btn4.isPressed()) {                                                      // debug code
+    if(btn4.isPressed()) {                                                      // debug
         digitalWrite(13, HIGH);
     }
     else {
@@ -93,13 +91,11 @@ void checkButtons() {
 }
 
 
-// used to write initial default eeprom values
+// writes initial default eeprom values
 void resetEeprom() {
     for(byte i = 0; i < sizeof(defaultEepromVals); i++) {
-        EEPROM.writeByte(i, defaultEepromVals[i]);                              // write each byte in the data value array to the eeprom
-
+        EEPROM.updateByte(i, defaultEepromVals[i]);                             // write each byte in the data value array to the eeprom
         byte output = EEPROM.read(i);                                           // same function as readByte
-
         Serial.print("adress: ");
         Serial.println(i, DEC);
         Serial.print("input: ");
@@ -107,7 +103,6 @@ void resetEeprom() {
         Serial.print("output: ");
         Serial.println(output, HEX);
         Serial.println("");
-
     }
 }
 
@@ -145,21 +140,28 @@ uint8_t decBrightness() {
 }
 
 
-// monitors the car's lighting input, and controls the display backlight as necessary
-// run this often
-void monitorLighting() {
-    //uint8_t output;
+// monitors the car's lighting input, and updates the display backlight as necessary
+void runAutoBacklight() {
+    if(autoBacklight) {                                                         // only run if auto mode is active
+        if(millis() - lastLightSampleTime >= autoSampleInterval) {              // if it has been autoSampleInterval ms since the last car lighting value update
+            backlightAvg.addValue(getCarBrightness());                          // add the new car lighting value to the running average
 
-    if(autoBacklight) {                                                         // auto mode
-        // if the car lighting is on
-            // if the car lighting brightness changed
-            // update the backlight brightness
-        // else, leave the backlight at full brightness
+            uint16_t newAvg = backlightAvg.getAverage();                        // get the new average out
+            if(currentAvg != newAvg) {                                          // if the average car lighting value changed
+                currentAvg = newAvg;
+                uint8_t output = currentAvg;
+
+                if(currentAvg < autoLightMin || currentAvg > autoLightMax) {    // if the car light value is close to the outside limits
+                    // set the backlight to fully on
+                    // it will be fully on if the car's lighting is off (it's probably daytime, so having it at max will help with glare I think)
+                    // or if the car's lighting is at its highest level (which probably wont be a perfect 255 but whatever)
+                    output = 255;
+                }
+
+                analogWrite(BACKLIGHT_PIN, output);                             // update the backlight
+            }
+
+            lastLightSampleTime = millis();                                     // reset the timer
+        }
     }
 }
-
-
-// auto mode, car lights off: backlight is at full brightness
-// auto mode, car lights on: backlight dims proportionally with the car's light brightness
-
-// manual mode: 8 static brightness levels

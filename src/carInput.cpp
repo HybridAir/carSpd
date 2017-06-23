@@ -31,6 +31,12 @@ uint8_t getSpeed() {
 }
 
 
+// returns the car's illumination input as an 8-bit value (0-255) 
+uint8_t getCarBrightness() {
+    return map(analogRead(A0), 0, 1023, 0, 255);
+}
+
+
 // calculates the vehicle speed over the last samplePeriod (usually a second), run this often
 // it uses timer 1, which is on arduino uno pin 5, connect it to your car's VSS output
 void betterSpeed() {

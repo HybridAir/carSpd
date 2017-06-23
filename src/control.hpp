@@ -4,6 +4,7 @@
 #include "main.hpp"
 #include <Button.h>
 #include <EEPROMex.h>
+#include <RunningAverage.h>
 
 
 // button variables
@@ -34,7 +35,13 @@ static uint8_t currentView = 0;       // the currently displayed view index
 
 
 // backlight control variables
-static bool autoBacklight = false;                                                      // default to manual backlight control mode
+static bool autoBacklight = true;                                                      // default to auto backlight control mode
+static uint8_t autoSampleInterval = 100;          // car lighting input sample rate
+static uint32_t lastLightSampleTime = 0;        // the last time the car lighting input was sampled
+static uint8_t currentAvg = 0;
+static const uint8_t autoLightMin = 20;
+static const uint8_t autoLightMax = 250;
+
 static uint8_t currentBrightness = 255;
 static const uint8_t brightnessLevels = 8;
 static const uint8_t brightnessLevel[brightnessLevels] = {0, 4, 8, 16, 32, 64, 128, 255};
@@ -45,7 +52,7 @@ static uint8_t currentLevel = brightnessLevels - 1;
 static void checkButtons();
 static void initReadEeprom();
 static void resetEeprom();
-static void monitorLighting();
+static void runAutoBacklight();
 static void setLightMode(bool modeInput);
 static void setBrightness(uint8_t level);
 static uint8_t incBrightness();

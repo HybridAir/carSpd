@@ -11,7 +11,7 @@ Before PCB completion
 - DS3231 hardware support
 
 After
-- DS3231 software support (I don't have one on hand to test, shipping will take a while) 
+- DS3231 software support (I don't have one on hand to test, shipping will take a while)
 - Injector reading (non-priority)
 
 ## Used Libraries
@@ -22,3 +22,5 @@ After
 [ST7032](https://github.com/tomozh/arduino_ST7032)
 
 [RTC](https://github.com/Makuna/Rtc)
+
+[RunningAverage](https://github.com/RobTillaart/Arduino/tree/master/libraries/RunningAverage)

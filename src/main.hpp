@@ -11,6 +11,7 @@ void betterSpeed();
 void toggleSpeedUnit();
 bool getSpeedUnit();
 uint8_t getSpeed();
+uint8_t getCarBrightness();
 void setSpeedUnit(bool inputUnit);
 
 // display public prototypes
@@ -21,7 +22,7 @@ uint8_t incContrast();
 uint8_t decContrast();
 void setView(byte indexInput);
 
-void initSettings();
+void controlInit();
 void monitorIO();
 //void setLightMode(bool modeInput);
 //void setBrightness(uint8_t level);
