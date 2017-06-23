@@ -44,7 +44,7 @@ void setContrast(byte contrastInput) {
 
 
 // increases the contrast within the allowed range, and returns the new value
-unit8_t incContrast() {
+uint8_t incContrast() {
     if(contrastValue >= CONTRASTMIN && contrastValue < CONTRASTMAX) {
         contrastValue += 1;
     }
@@ -56,7 +56,7 @@ unit8_t incContrast() {
 
 
 // decreases the contrast within the allowed range, and returns the new value
-unit8_t decContrast() {
+uint8_t decContrast() {
     if(contrastValue > CONTRASTMIN && contrastValue <= CONTRASTMAX) {
         contrastValue -= 1;
     }
