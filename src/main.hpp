@@ -17,15 +17,13 @@ void setSpeedUnit(bool inputUnit);
 void displayInit();
 void printSpeed(byte speed);
 void setContrast(byte contrastInput);
-unit8_t incContrast();
-unit8_t decContrast();
+uint8_t incContrast();
+uint8_t decContrast();
 void setView(byte indexInput);
 
 void initSettings();
-void initReadEeprom();
-void checkButtons();
-void resetEeprom();
-void setLightMode(bool modeInput);
-void setBrightness(byte newBrightness);
+void monitorIO();
+//void setLightMode(bool modeInput);
+//void setBrightness(uint8_t level);
 
 #endif

@@ -13,6 +13,6 @@ void setup() {
 
 void loop() {
     betterSpeed();
-    checkButtons();
-
+    //checkButtons();
+    monitorIO();
 }

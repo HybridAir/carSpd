@@ -1,50 +1,35 @@
 //handles all user input and control stuff (buttons, settings, eeprom, backlight, etc)
 
-#include "main.hpp"
-#include <Button.h>
-#include <EEPROMex.h>
+#include "control.hpp"
 
 
-// button stuff
-#define BUTTON1_PIN 6
-#define BUTTON2_PIN 7
-#define BUTTON3_PIN 8
-#define BUTTON4_PIN 9
-#define PULLUP true
-#define INVERT true
-#define DEBOUNCE_MS 35
-
+// init button debounce objects
 Button btn1(BUTTON1_PIN, PULLUP, INVERT, DEBOUNCE_MS);
 Button btn2(BUTTON2_PIN, PULLUP, INVERT, DEBOUNCE_MS);
 Button btn3(BUTTON3_PIN, PULLUP, INVERT, DEBOUNCE_MS);
 Button btn4(BUTTON4_PIN, PULLUP, INVERT, DEBOUNCE_MS);
 
 
-// backlight control variables
-bool autoBacklight = true;                                                      // default to auto backlight control mode
-
-
-// default eeprom data array, 5 different values are stored, each using a byte of space
-// speedUnit bool, lastViewIndex, contrast, lightMode bool, lightLevel
-#define SPEEDUNIT_ADDRESS   0
-#define LASTVIEWINDEX_ADDRESS   1
-#define CONTRAST_ADDRESS   2
-#define LIGHTMODE_ADDRESS   3
-#define LIGHTLEVEL_ADDRESS   4
-byte defaultEepromVals[6] = {0x00, 0x00, 0x1e, 0x01, 0x00};
-
-
+// init
 void initSettings() {
 
     // reset the eeprom to default values if a specific button is held during boot
     btn4.read();
     if(btn4.isPressed()) {
-        resetEeprom();       // eeprom init test code
+        resetEeprom();                                                          // eeprom init test code
     }
     else {
         initReadEeprom();
     }
 
+    pinMode(BACKLIGHT_PIN, OUTPUT);
+
+}
+
+
+void monitorIO() {
+    checkButtons();
+    monitorLighting();
 }
 
 
@@ -68,6 +53,7 @@ void initReadEeprom() {
             break;
         case LIGHTLEVEL_ADDRESS:                                                //address 4: backlight brightness level, as a byte
             setBrightness(EEPROM.read(i));
+
             break;
         default:
             break;
@@ -89,11 +75,13 @@ void checkButtons() {
     }
 
     if(btn2.wasPressed()) {
-        EEPROM.writeByte(CONTRAST_ADDRESS, incContrast());                      // set the contrast and save it
+        EEPROM.writeByte(LIGHTLEVEL_ADDRESS, incBrightness());                  // set the contrast and save it
+        //EEPROM.writeByte(CONTRAST_ADDRESS, incContrast());                      // set the contrast and save it
     }
 
     if(btn3.wasPressed()) {
-        EEPROM.writeByte(CONTRAST_ADDRESS, decContrast());                      // set the contrast and save it
+        EEPROM.writeByte(LIGHTLEVEL_ADDRESS, decBrightness());                  // set the contrast and save it
+        //EEPROM.writeByte(CONTRAST_ADDRESS, decContrast());                      // set the contrast and save it
     }
 
     if(btn4.isPressed()) {                                                      // debug code
@@ -130,7 +118,48 @@ void setLightMode(bool modeInput) {
 }
 
 
-// sets the backlight to a specific brightness
-void setBrightness(byte newBrightness) {
-    // just a placeholder right now
+// sets the backlight to a specific brightness level, give it the level index you want (0-7)
+void setBrightness(uint8_t level) {
+    currentLevel = level;
+    analogWrite(BACKLIGHT_PIN, brightnessLevel[currentLevel]);
 }
+
+
+// increses the brightness level by 1, and returns the new level
+uint8_t incBrightness() {
+    if(currentLevel >= 0 && currentLevel < (brightnessLevels - 1)) {
+        currentLevel += 1;
+    }
+    setBrightness(currentLevel);
+    return currentLevel;
+}
+
+
+// decreases the brightness level by 1, and returns the new level
+uint8_t decBrightness() {
+    if(currentLevel > 0 && currentLevel <= (brightnessLevels - 1)) {
+        currentLevel -= 1;
+    }
+    setBrightness(currentLevel);
+    return currentLevel;
+}
+
+
+// monitors the car's lighting input, and controls the display backlight as necessary
+// run this often
+void monitorLighting() {
+    //uint8_t output;
+
+    if(autoBacklight) {                                                         // auto mode
+        // if the car lighting is on
+            // if the car lighting brightness changed
+            // update the backlight brightness
+        // else, leave the backlight at full brightness
+    }
+}
+
+
+// auto mode, car lights off: backlight is at full brightness
+// auto mode, car lights on: backlight dims proportionally with the car's light brightness
+
+// manual mode: 8 static brightness levels
