@@ -7,12 +7,7 @@ My main motivation for starting this project is so that I wont have to read the 
 *This project is meant to be some kind of successor to the canceled carbt_v1 project. While their main functions are very different, they both serve the purpose of improving or adding new functions to my car.*
 
 ## Todo
-Before PCB completion
-- DS3231 hardware support
-
-After
-- DS3231 software support (I don't have one on hand to test, shipping will take a while)
-- Injector reading (non-priority)
+- Figure out injector reading
 
 ## Used Libraries
 [Button](https://github.com/JChristensen/Button)
@@ -24,3 +19,7 @@ After
 [RTC](https://github.com/Makuna/Rtc)
 
 [RunningAverage](https://github.com/RobTillaart/Arduino/tree/master/libraries/RunningAverage)
+
+[OneWire](https://github.com/PaulStoffregen/OneWire)
+
+[DallasTemperature](https://github.com/milesburton/Arduino-Temperature-Control-Library)

@@ -2,26 +2,39 @@
 #include "control.hpp"
 
 
-// init button debounce objects
+// button debounce objects
 Button btn1(BUTTON1_PIN, PULLUP, INVERT, DEBOUNCE_MS);
 Button btn2(BUTTON2_PIN, PULLUP, INVERT, DEBOUNCE_MS);
 Button btn3(BUTTON3_PIN, PULLUP, INVERT, DEBOUNCE_MS);
 Button btn4(BUTTON4_PIN, PULLUP, INVERT, DEBOUNCE_MS);
 
+// car illumination input running average object
 RunningAverage backlightAvg(10);
+
+// temperature sensor objects
+OneWire oneWire(10);
+DallasTemperature tempSensor(&oneWire);
 
 
 // init
 void controlInit() {
+    // reset the eeprom to default values if a specific button is held during boot
     btn4.read();
-    if(btn4.isPressed()) {                                                      // reset the eeprom to default values if a specific button is held during boot
+    if(btn4.isPressed()) {
         resetEeprom();
     }
     else {                                                                      // else, get the existing settings out of eeprom
         initReadEeprom();
     }
 
-    pinMode(BACKLIGHT_PIN, OUTPUT);
+    pinMode(BACKLIGHT_PIN, OUTPUT);     // set up the backlight output pin
+
+    // prepare the temperature sensor
+    tempSensor.begin();
+    tempSensor.getAddress(tempSensorAddress, 0);        // find the sensor and get its address
+    tempSensor.setResolution(tempSensorAddress, 10);    // use 10-bit resolution (accurate to .25 C)
+    tempSensor.setWaitForConversion(false);            // make temperature reading non-blocking
+    tempSensor.requestTemperatures();      // get the initial temperature value ready
 }
 
 
@@ -29,6 +42,7 @@ void controlInit() {
 void monitorIO() {
     checkButtons();
     runAutoBacklight();
+    checkTemp();
 }
 
 
@@ -163,5 +177,16 @@ void runAutoBacklight() {
 
             lastLightSampleTime = millis();                                     // reset the timer
         }
+    }
+}
+
+
+// updates a temperature variable every tempInterval ms, non blocking call often
+void checkTemp() {
+    if(millis() - lastTempTime >= tempInterval) {       // if it has been tempInterval ms since the last temperature check
+        temperatureC = tempSensor.getTempC(tempSensorAddress);
+        lastTempTime = millis();
+        //Serial.println(temperatureC);
+        tempSensor.requestTemperatures();
     }
 }

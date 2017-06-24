@@ -5,6 +5,8 @@
 #include <Button.h>
 #include <EEPROMex.h>
 #include <RunningAverage.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
 
 // button variables
@@ -48,6 +50,13 @@ static const uint8_t brightnessLevel[brightnessLevels] = {0, 4, 8, 16, 32, 64, 1
 static uint8_t currentLevel = brightnessLevels - 1;
 
 
+// temperature sensor variables
+static DeviceAddress tempSensorAddress;
+static const uint16_t tempInterval = 1000;
+static uint32_t lastTempTime = 0;
+static float temperatureC = 0;
+
+
 // prototypes
 static void checkButtons();
 static void initReadEeprom();
@@ -57,5 +66,6 @@ static void setLightMode(bool modeInput);
 static void setBrightness(uint8_t level);
 static uint8_t incBrightness();
 static uint8_t decBrightness();
+static void checkTemp();
 
 #endif
