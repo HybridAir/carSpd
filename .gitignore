@@ -4,6 +4,7 @@
 .gcc-flags.json
 refs/
 .travis.yml
+lib/
 
 # Ignore list for Eagle, a PCB layout tool
 
