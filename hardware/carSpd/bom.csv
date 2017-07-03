@@ -1,0 +1,39 @@
+Have,Qty,Device,Value,Package,Parts,Description
+x,4,LED,white,0805,"LED1, LED2, LED3, LED4",LED
+x,5,tactile button,,TACTILE-SWITCH-1101NE,"S1, S2, S3, S4, S5","Various NO switches- pushbuttons, reed, etc"
+x,1,resistor,100k,0805,R2,"RESISTOR, American symbol"
+x,4,resistor,10k,0603,"R1, R5, R7, R11","RESISTOR, American symbol"
+x,1,capacitor,10nf,0805,C5,"CAPACITOR, European symbol"
+x,3,capacitor,10uf,0603,"C1, C18, C7","CAPACITOR, European symbol"
+x,1,resistor,150,0603,R8,"RESISTOR, American symbol"
+x,3,capacitor,1uf,0805,"C8, C17, C19","CAPACITOR, European symbol"
+x,1,resistor,2.7k,0603,R18,"RESISTOR, American symbol"
+x,1,resistor,270,0603,R14,"RESISTOR, American symbol"
+x,1,transistor,2n3904,SOT23-3,Q1,Generic NPN BJT
+x,5,resistor,4.7k,0805,"R6, R9, R10, R12, R13","RESISTOR, American symbol"
+x,3,resistor,47k,0805,"R15, R16, R17","RESISTOR, American symbol"
+x,1,ATMEGA328P-AU,ATMEGA328P_TQFP,TQFP32-08,U4,
+x,1,5pin male header,CAR_INPUT,".1"" pth right angle",SV1,
+x,1,serial to usb CP2102,CP2102,MLP28,IC2,Single-Chip USB to UART Bridge
+x,1,Battery holder,CR1220,1220-SMD,B1,
+x,1,Display,ERC1602-4SMD-LED,ERC1602-4,DISPLAY,ERC1602-4 LCD from buydisplay
+x,1,led,POWER/green,0805,LED6,LED
+x,1,led,STATUS/red,CHIPLED_0805,LED5,LED
+x,8,capacitor,0.1uf/100nf,0603,"C4, C9, C10, C11, C16, C20, C24, C25","CAPACITOR, European symbol"
+,1,Inductor,10uh 1A,CD54,L1,POWER INDUCTOR
+,1,capacitor,100uf,panasonic_D,C6,
+,1,Inductor L-USL3225M,10uh 1A,L3225M,L2,"INDUCTOR, American symbol"
+,1,RESONATOR,16MHZ,RESONATOR-SMD,Y1,Resonator
+,1,CRYSTAL,16MHZ,CRYSTAL-SMD-5X3,Y2,Various standard crystals. Proven footprints.
+,2,capacitor,18pf,0603,"C22, C23","CAPACITOR, European symbol"
+,1,capacitor,22uf,0603,C2,"CAPACITOR, European symbol"
+,1,capacitor,3.9nf,0603,C3,"CAPACITOR, European symbol"
+,1,resistor,44.2k,0603,R4,"RESISTOR, American symbol"
+,3,Zener Diode,5.1V,SOD-323,"D1, D2, D3",Zener Diode
+,3,Zener Diode ZMM5V1,5.1V,SOD-80,"D4, D5, D6",
+,1,resistor,6.8k,0603,R3,"RESISTOR, American symbol"
+,1,Regulator 7805DT,5V,TO252,U3,Positive VOLTAGE REGULATOR
+,1,DS1820,DS1820,µSOP8,U$2,DS18B20
+,1,DS3231/SO,DS3231/SO,SO16W,IC1,
+,1,buck converter MP2307,MP2307,SOIC8,U2,
+,1,mini usb female,USBSMD,USB-MINIB,JP3,USB Connectors
