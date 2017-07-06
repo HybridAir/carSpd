@@ -1,37 +1,37 @@
-Have,Qty,Device,Value,Package,Parts,Description
-0,1,DS1820,DS1820,µSOP8,U4,DS18B20
-0,1,DS3231/SO,DS3231/SO,SO16W,IC3,
-0,3,Zener Diode ZMM5V1,5.1V,SOD-80,"D6, D7, D8",Backup diode package
-1,1,resistor,150,603,R8,
-1,1,resistor,270,603,R2,
-1,8,capacitor,0.1uf/100nf,805,"C2, C3, C6, C9, C10, C11, C15, C16","CAPACITOR, European symbol"
-1,1,resistor,100k,805,R2,
-1,4,resistor,10k,603,"R1, R5, R7, R11",
-1,1,capacitor,10nf,805,C5,
-1,3,capacitor,10uf,603,"C1, C18, C7",
-1,3,capacitor,1uf,805,"C8, C12, C14",
-1,1,resistor,2.7k,603,R12,
-1,1,transistor,2n3904,SOT23-3,Q1,Generic NPN BJT
-1,5,resistor,4.7k,805,"R3, R4, R10, R15, R16",
-1,3,resistor,47k,805,"R5, R6, R7",
-1,1,ATMEGA328P-AU,ATMEGA328P_TQFP,TQFP32-08,U1,
-1,1,Battery holder,CR1220,1220-SMD,B1,
-1,1,Display,ERC1602-4SMD-LED,ERC1602-4,U3,ERC1602-4 LCD from buydisplay
-1,1,led,green,805,LED2,Power led
-1,1,led,red,CHIPLED_0805,LED1,status led
-1,4,LED,white,805,"LED3, LED4, LED5, LED6",Button indicator LEDs
-1,5,tactile button,,TACTILE-SWITCH-1101NE,"S1, S2, S3, S4, S5",Front and back reset buttons
-1,1,serial to usb CP2102,CP2102,MLP28,IC2,Single-Chip USB to UART Bridge
-+,1,6pin male header,CAR_INPUT,".1"" pth right angle",SV1,
-+,1,inductor,22uh,L3225M,L1,
-+,1,RESONATOR,16MHZ,RESONATOR-SMD,Y2,Resonator
-+,1,CRYSTAL,16MHZ,CRYSTAL-SMD-5X3,Y1,Various standard crystals. Proven footprints.
-+,2,capacitor,18pf,603,"C1, C4","CAPACITOR, European symbol"
-+,3,Zener Diode,5.1V,SOD-323,"D1, D2, D3",Zener Diode
-+,1,mini usb female,USBSMD,USB-MINIB,JP2,USB Connectors
-+,1,capacitor,22uf,0603/0805,C7,
-+,1,resistor,52.3k,603,R9,
-+,1,DIODE-SCHOTTKY,,SOD-323,D4,
-+,1,LM1117,,SOT223,U2,Linear voltage reg
-+,1,Diode,1N4148,SOD-323,D5,
-+,1,MCP16301/H,MCP16301/H,SOT23-6,IC1,High-Voltage Input Integrated Switch Step-Down Regulator
+Qty,Device,Value,Package,Parts,Description,Digikey Part,Have
+1,DS18B20U,,µSOP8,U4,Temp sensor,DS18B20U+-ND,0
+1,DS3231S,,16-SOIC,IC3,RTC,DS3231S#-ND,0
+3,ZMM5V1,,SOD-80,"D6, D7, D8",Backup zener diode for car inputs,,0
+1,resistor,150,res-0603,R8,,,1
+1,resistor,270,res-0603,R2,,,1
+8,capacitor,0.1uf/100nf,cap-0805,"C2, C3, C6, C9, C10, C11, C15, C16",,,1
+1,resistor,100k,res-0805,R2,,,1
+4,resistor,10k,res-0603,"R1, R5, R7, R11",,,1
+1,capacitor,10nf,cap-0805,C5,,,1
+3,capacitor,10uf,cap-0603,"C1, C18, C7",,,1
+3,capacitor,1uf,cap-0805,"C8, C12, C14",,,1
+1,resistor,2.7k,res-0603,R12,,,1
+1,transistor,2n3904,SOT23-3,Q1,Generic NPN BJT,1727-4044-1-ND,1
+5,resistor,4.7k,res-0805,"R3, R4, R10, R15, R16",,,1
+3,resistor,47k,res-0805,"R5, R6, R7",,,1
+1,ATMEGA328P-AU,ATMEGA328P_TQFP,TQFP32,U1,,ATMEGA328P-AURCT-ND,1
+1,Battery holder,CR1220,1220-SMD,B1,,BC501SM-ND,1
+1,ERC1602-4,,ERC1602-4,U3,LCD from buydisplay,,1
+1,led,green,CHIPLED_0805,LED2,Power LED,,1
+1,led,red,CHIPLED_0805,LED1,Status LED,,1
+4,LED,white,CHIPLED_0805,"LED3, LED4, LED5, LED6",Button indicator LEDs,,1
+5,tactile button,,3*6*2.5mm,"S1, S2, S3, S4, S5",Front and back reset buttons,,1
+1,CP2102-GMR,,MLP-28 QFN,IC2,USB to Serial,336-1160-1-ND,1
+1,5p male header,CAR_INPUT,".1"" pth right angle",SV1,Car input connector,S1112EC-40-ND ,
+1,CBC2518T220M,22uh,L3225M,L1,inductor,587-1616-1-ND,
+1,CSTCE16M0V53-R0,16MHZ,RESONATOR-SMD,Y2,resonator,490-1198-1-ND ,
+1,FA-238 16.0000MB-C3,16MHZ,CRYSTAL-SMD-5X3,Y1,Optional crystal for U1,SER3686CT-ND,
+2,capacitor,18pf,cap-0603,"C1, C4",Load capacitors for optional Y1,490-9659-1-ND,
+3,MM3Z5V1ST1G,5.1V,SOD-323,"D1, D2, D3",Primary car input zener diode,MM3Z5V1ST1GOSCT-ND ,
+1,690-005-299-043,,USB-MINIB,JP2,Mini USB B,151-1206-1-ND ,
+1,capacitor,22uf,cap-0805/0603,C7,,1276-6687-1-ND ,
+1,resistor,52.3k,res-0603,R9,Calibration resisitor for IC1,311-52.3KHRCT-ND ,
+1,NSR0530HT1G,,SOD-323,D4,Schottky diode,NSR0530HT1GOSCT-ND ,
+1,AZ1117,,SOT223,U2,Backup linear voltage reg,AZ1117CH-5.0TRG1DICT-ND ,
+1,1N4148,,SOD-323,D5,Diode,1N4148WXTPMSCT-ND ,
+1,MCP16301T-I/CHY,,SOT23-6,IC1,DC buck converter,MCP16301T-I/CHYCT-ND ,
