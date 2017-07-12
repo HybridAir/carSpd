@@ -320,12 +320,8 @@ wide body 7.5 mm/JEDEC MS-013AA</description>
 <pad name="3" x="6.3" y="-14.27" drill="0.8" rot="R180"/>
 <pad name="2" x="8.1" y="-14.27" drill="0.8"/>
 <pad name="1" x="9.9" y="-14.27" drill="0.8"/>
-<text x="9.5" y="-12.77" size="1.4224" layer="21" ratio="12">1</text>
 <wire x1="-33.3" y1="10.73" x2="33.3" y2="10.73" width="0.127" layer="21"/>
 <wire x1="33.3" y1="10.73" x2="33.3" y2="-8.27" width="0.127" layer="21"/>
-<wire x1="33.3" y1="-8.27" x2="33.3" y2="-13.27" width="0.127" layer="21"/>
-<wire x1="33.3" y1="-13.27" x2="-33.3" y2="-13.27" width="0.127" layer="21"/>
-<wire x1="-33.3" y1="-13.27" x2="-33.3" y2="-8.27" width="0.127" layer="21"/>
 <wire x1="-33.3" y1="-8.27" x2="-33.3" y2="10.73" width="0.127" layer="21"/>
 <wire x1="-33.3" y1="-8.27" x2="33.3" y2="-8.27" width="0.127" layer="21"/>
 <text x="30.75" y="3" size="1.4224" layer="51" ratio="12" align="center">+</text>
@@ -336,6 +332,7 @@ wide body 7.5 mm/JEDEC MS-013AA</description>
 <text x="-32" y="4.73" size="1.27" layer="25">&gt;Name</text>
 <smd name="LED+" x="30.48" y="3" dx="4" dy="1.5" layer="16"/>
 <smd name="LED-" x="30.48" y="0.46" dx="4" dy="1.5" layer="16"/>
+<wire x1="9.398" y1="-13.208" x2="10.414" y2="-13.208" width="0.3048" layer="21"/>
 </package>
 <package name="ERC1602-4">
 <description>Untested but printer-verified ERC1602-4 footprint. Backlight pins not included, add them youself they're .1" pitch</description>
@@ -382,8 +379,8 @@ wide body 7.5 mm/JEDEC MS-013AA</description>
 <rectangle x1="-1" y1="-1" x2="-0.5" y2="1" layer="21"/>
 </package>
 <package name="IND-1007/2518">
-<smd name="P$1" x="-1.05" y="0" dx="0.6" dy="2" layer="1"/>
-<smd name="P$2" x="1.05" y="0" dx="0.6" dy="2" layer="1"/>
+<smd name="P$1" x="-1.25" y="0" dx="1" dy="2" layer="1"/>
+<smd name="P$2" x="1.25" y="0" dx="1" dy="2" layer="1"/>
 <wire x1="-0.5" y1="1" x2="0.5" y2="1" width="0.127" layer="21"/>
 <wire x1="0.5" y1="1" x2="0.5" y2="-1" width="0.127" layer="21"/>
 <wire x1="0.5" y1="-1" x2="-0.5" y2="-1" width="0.127" layer="21"/>
@@ -12249,6 +12246,8 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="H3" library="SparkFun-Hardware" deviceset="STAND-OFF" device=""/>
 <part name="H4" library="SparkFun-Hardware" deviceset="STAND-OFF" device=""/>
 <part name="SV1" library="con-lsta" deviceset="FE05W" device="" value="CAR_INPUT"/>
+<part name="LED7" library="led" deviceset="LED" device="CHIPLED_0805"/>
+<part name="LED8" library="led" deviceset="LED" device="CHIPLED_0805"/>
 </parts>
 <sheets>
 <sheet>
@@ -13078,6 +13077,8 @@ should work according to the datasheet. </text>
 </instance>
 <instance part="R12" gate="G$1" x="55.88" y="45.72"/>
 <instance part="P+16" gate="1" x="114.3" y="167.64"/>
+<instance part="LED7" gate="G$1" x="109.22" y="127" rot="R270"/>
+<instance part="LED8" gate="G$1" x="109.22" y="119.38" rot="R270"/>
 </instances>
 <busses>
 </busses>
@@ -13283,6 +13284,14 @@ should work according to the datasheet. </text>
 <wire x1="114.3" y1="157.48" x2="114.3" y2="165.1" width="0.1524" layer="91"/>
 <junction x="114.3" y="157.48"/>
 <pinref part="P+16" gate="1" pin="+5V"/>
+<pinref part="LED8" gate="G$1" pin="A"/>
+<wire x1="111.76" y1="119.38" x2="114.3" y2="119.38" width="0.1524" layer="91"/>
+<wire x1="114.3" y1="119.38" x2="114.3" y2="127" width="0.1524" layer="91"/>
+<pinref part="LED7" gate="G$1" pin="A"/>
+<wire x1="114.3" y1="127" x2="111.76" y2="127" width="0.1524" layer="91"/>
+<wire x1="114.3" y1="127" x2="114.3" y2="134.62" width="0.1524" layer="91"/>
+<junction x="114.3" y="127"/>
+<junction x="114.3" y="134.62"/>
 </segment>
 </net>
 <net name="N$14" class="0">
@@ -13394,6 +13403,14 @@ should work according to the datasheet. </text>
 <junction x="101.6" y="149.86"/>
 <pinref part="LED6" gate="G$1" pin="C"/>
 <wire x1="101.6" y1="157.48" x2="104.14" y2="157.48" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="134.62" x2="101.6" y2="127" width="0.1524" layer="91"/>
+<junction x="101.6" y="134.62"/>
+<pinref part="LED7" gate="G$1" pin="C"/>
+<wire x1="101.6" y1="127" x2="104.14" y2="127" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="127" x2="101.6" y2="119.38" width="0.1524" layer="91"/>
+<junction x="101.6" y="127"/>
+<pinref part="LED8" gate="G$1" pin="C"/>
+<wire x1="104.14" y1="119.38" x2="101.6" y2="119.38" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$3" class="0">
