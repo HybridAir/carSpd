@@ -10,13 +10,15 @@
 
 
 // button variables
-#define BUTTON1_PIN A2
-#define BUTTON2_PIN A3
-#define BUTTON3_PIN A4
+#define BUTTON1_PIN A1
+#define BUTTON2_PIN A2
+#define BUTTON3_PIN A3
 #define BUTTON4_PIN 4
 #define PULLUP true
 #define INVERT true
-#define DEBOUNCE_MS 35
+#define DEBOUNCE_MS 40
+
+
 #define BACKLIGHT_PIN 11
 
 
@@ -27,7 +29,7 @@
 #define CONTRAST_ADDRESS   2
 #define LIGHTMODE_ADDRESS   3
 #define LIGHTLEVEL_ADDRESS   4
-byte defaultEepromVals[6] = {0x00, 0x00, 0x1e, 0x01, 0x00};
+byte defaultEepromVals[6] = {0x00, 0x00, 0x1e, 0x00, 0x00};
 
 
 #define CONTRASTMAX     48
@@ -37,7 +39,7 @@ static uint8_t currentView = 0;       // the currently displayed view index
 
 
 // backlight control variables
-static bool autoBacklight = true;                                                      // default to auto backlight control mode
+static bool autoBacklight = false;                                                      // default to auto backlight control mode
 static uint8_t autoSampleInterval = 100;          // car lighting input sample rate
 static uint32_t lastLightSampleTime = 0;        // the last time the car lighting input was sampled
 static uint8_t currentAvg = 0;

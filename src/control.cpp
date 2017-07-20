@@ -43,6 +43,7 @@ void monitorIO() {
     checkButtons();
     runAutoBacklight();
     checkTemp();
+
 }
 
 
@@ -87,13 +88,19 @@ void checkButtons() {
     }
 
     if(btn2.wasPressed()) {
-        EEPROM.writeByte(LIGHTLEVEL_ADDRESS, incBrightness());                  // set the contrast and save it
+        int out = incBrightness();
+        EEPROM.writeByte(LIGHTLEVEL_ADDRESS, out);                  // set the contrast and save it
         //EEPROM.writeByte(CONTRAST_ADDRESS, incContrast());                      // set the contrast and save it
+        Serial.print("up");
+        Serial.println(out);
     }
 
     if(btn3.wasPressed()) {
-        EEPROM.writeByte(LIGHTLEVEL_ADDRESS, decBrightness());                  // set the contrast and save it
+        int out = decBrightness();
+        EEPROM.writeByte(LIGHTLEVEL_ADDRESS, out);                  // set the contrast and save it
         //EEPROM.writeByte(CONTRAST_ADDRESS, decContrast());                      // set the contrast and save it
+        Serial.print("down");
+        Serial.println(out);
     }
 
     if(btn4.isPressed()) {                                                      // debug
