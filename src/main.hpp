@@ -24,7 +24,5 @@ void setView(byte indexInput);
 
 void controlInit();
 void monitorIO();
-//void setLightMode(bool modeInput);
-//void setBrightness(uint8_t level);
 
 #endif

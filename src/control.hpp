@@ -10,10 +10,10 @@
 
 
 // button variables
-#define BUTTON1_PIN 6
-#define BUTTON2_PIN 7
-#define BUTTON3_PIN 8
-#define BUTTON4_PIN 9
+#define BUTTON1_PIN A2
+#define BUTTON2_PIN A3
+#define BUTTON3_PIN A4
+#define BUTTON4_PIN 4
 #define PULLUP true
 #define INVERT true
 #define DEBOUNCE_MS 35

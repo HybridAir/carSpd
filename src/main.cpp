@@ -4,7 +4,6 @@
 
 void setup() {
     Serial.begin(9600);     // used for debug and testing
-
     controlInit();
     displayInit();
     carInit();
@@ -13,6 +12,5 @@ void setup() {
 
 void loop() {
     betterSpeed();
-    //checkButtons();
     monitorIO();
 }
