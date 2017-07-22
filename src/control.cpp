@@ -91,16 +91,16 @@ void checkButtons() {
         int out = incBrightness();
         EEPROM.writeByte(LIGHTLEVEL_ADDRESS, out);                  // set the contrast and save it
         //EEPROM.writeByte(CONTRAST_ADDRESS, incContrast());                      // set the contrast and save it
-        Serial.print("up");
-        Serial.println(out);
+        //Serial.print("up");
+        //Serial.println(out);
     }
 
     if(btn3.wasPressed()) {
         int out = decBrightness();
         EEPROM.writeByte(LIGHTLEVEL_ADDRESS, out);                  // set the contrast and save it
         //EEPROM.writeByte(CONTRAST_ADDRESS, decContrast());                      // set the contrast and save it
-        Serial.print("down");
-        Serial.println(out);
+        // Serial.print("down");
+        // Serial.println(out);
     }
 
     if(btn4.isPressed()) {                                                      // debug

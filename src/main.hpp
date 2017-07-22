@@ -3,6 +3,7 @@
 
 #include "Arduino.h"
 #include <stdint.h>
+#include <ST7032.h>
 
 
 // carInput public prototypes

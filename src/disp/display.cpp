@@ -1,21 +1,53 @@
 // handles all display related tasks
-#include "display.hpp"
+#include "disp/display.hpp"
 
-ST7032 lcd;
+// ST7032 lcd;
 
 
 //initializes the display system
 void displayInit() {
     lcd.begin(16, 2);
     lcd.setContrast(contrastValue);
-    
-    Serial.begin(9600);
+
+
+    BigNumber_SendCustomChars();
+    DrawBigChar(0, 0, '1');
+    DrawBigChar(3, 0, '0');
+    DrawBigChar(7, 0, '5');
+
+    lcd.setCursor(12, 0);
+    lcd.print("KM/H");
+    lcd.setCursor(12, 1);
+    lcd.print("28.4");
+    for (;;) {}
+
+
 
 
     lcd.clear();
     delay(200);
     bootAnim();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // plays the boot animation

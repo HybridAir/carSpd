@@ -3,7 +3,10 @@
 
 #include "main.hpp"
 #include <Wire.h>
-#include <ST7032.h>
+// #include <ST7032.h>
+#include "disp/big.hpp"
+
+extern ST7032 lcd;
 
 #define CONTRASTMAX     48
 #define CONTRASTMIN     16
@@ -24,5 +27,8 @@ static void logoTop(byte x, byte y);
 static void logoLeft(byte x, byte y);
 static void logoRight(byte x, byte y);
 static void clearLogo(byte x, byte y);
+
+
+
 
 #endif
