@@ -1,8 +1,5 @@
-// handles all display related tasks
+// handles all general and low-level display related tasks
 #include "disp/display.hpp"
-
-// ST7032 lcd;
-
 
 //initializes the display system
 void displayInit() {
@@ -10,16 +7,16 @@ void displayInit() {
     lcd.setContrast(contrastValue);
 
 
-    BigNumber_SendCustomChars();
-    DrawBigChar(0, 0, '1');
-    DrawBigChar(3, 0, '0');
-    DrawBigChar(7, 0, '5');
-
-    lcd.setCursor(12, 0);
-    lcd.print("KM/H");
-    lcd.setCursor(12, 1);
-    lcd.print("28.4");
-    for (;;) {}
+    // writeBigNumChars();
+    // drawBigNum(0, '1');
+    // drawBigNum(3, '0');
+    // drawBigNum(7, '5');
+    //
+    // lcd.setCursor(12, 0);
+    // lcd.print("KM/H");
+    // lcd.setCursor(12, 1);
+    // lcd.print("28.4");
+    // for (;;) {}
 
 
 
