@@ -3,27 +3,14 @@
 
 //initializes the display system
 void displayInit() {
-    lcd.begin(16, 2);
+    //lcd.begin(16, 2);
     lcd.setContrast(contrastValue);
 
 
-    // writeBigNumChars();
-    // drawBigNum(0, '1');
-    // drawBigNum(3, '0');
-    // drawBigNum(7, '5');
-    //
-    // lcd.setCursor(12, 0);
-    // lcd.print("KM/H");
-    // lcd.setCursor(12, 1);
-    // lcd.print("28.4");
-    // for (;;) {}
-
-
-
-
-    lcd.clear();
+    //lcd.clear();
     delay(200);
-    bootAnim();
+    playBootAnim();
+    for (;;) {}
 }
 
 
@@ -34,88 +21,6 @@ void displayInit() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// plays the boot animation
-void bootAnim() {
-    lcd.createChar(0, (byte *) top1);
-    lcd.createChar(1, (byte *) top2);
-    lcd.createChar(2, (byte *) left2);
-    lcd.createChar(3, (byte *) left1);
-    lcd.createChar(4, (byte *) right2);
-    lcd.createChar(5, (byte *) right1);
-    // flash top, left, right, then all on for a delay
-    // turn all off then flicker on each big number position (888.8 or whatever)
-    // when all are on, turn all off, then aftwer a short delay display a 0 in the first position along with all other data
-
-
-// section 1: logo
-    // sequential pulse
-    logoTop(7, 0);
-    delay(275);
-    clearLogo(7, 0);
-    delay(100);
-	logoLeft(6, 1);
-    delay(275);
-    clearLogo(6, 1);
-    delay(100);
-	logoRight(8, 1);
-    delay(275);
-    clearLogo(8, 1);
-    delay(150);
-    // sequential display
-    logoTop(7, 0);
-    delay(75);
-    logoLeft(6, 1);
-    delay(75);
-    logoRight(8, 1);
-    delay(750);
-    // sequential clear
-    clearLogo(7, 0);
-    delay(75);
-    clearLogo(6, 1);
-    delay(75);
-	clearLogo(8, 1);
-    delay(1000);
-
-// section 2: all number positions
-
-}
-
-
-void logoTop(byte x, byte y) {
-    lcd.setCursor(x, y);
-    lcd.write(0);
-    lcd.write(1);
-}
-
-void logoLeft(byte x, byte y) {
-    lcd.setCursor(x, y);
-    lcd.write(3);
-    lcd.write(2);
-}
-
-void logoRight(byte x, byte y) {
-    lcd.setCursor(x, y);
-    lcd.write(4);
-    lcd.write(5);
-}
-
-void clearLogo(byte x, byte y) {
-    lcd.setCursor(x, y);
-    lcd.print("  ");
-}
 
 
 void printSpeed(byte speed) {

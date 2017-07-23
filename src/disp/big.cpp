@@ -35,3 +35,10 @@ uint8_t drawBigNum(uint8_t x, uint8_t theChar) {
 
     return charWidth + 1 ;
 }
+
+void clearBigNum(uint8_t x) {
+    lcd.setCursor(x, 0);
+    lcd.print("   ");
+    lcd.setCursor(x, 1);
+    lcd.print("   ");
+}

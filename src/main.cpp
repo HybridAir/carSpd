@@ -7,8 +7,10 @@ void setup() {
     Serial.begin(9600);     // used for debug and testing
 
 
+    lcd.begin(16, 2);
 
 
+    lcd.clear();
     controlInit();
     displayInit();
     carInit();
