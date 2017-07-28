@@ -5,6 +5,7 @@
 refs/
 .travis.yml
 lib/
+docs/
 
 # Ignore list for Eagle, a PCB layout tool
 
