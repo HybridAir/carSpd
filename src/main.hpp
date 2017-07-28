@@ -17,7 +17,7 @@ void setSpeedUnit(bool inputUnit);
 
 // display public prototypes
 void displayInit();
-void printSpeed(byte speed);
+//void printSpeed(byte speed);
 void setContrast(byte contrastInput);
 uint8_t incContrast();
 uint8_t decContrast();

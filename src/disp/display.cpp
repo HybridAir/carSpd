@@ -3,14 +3,9 @@
 
 //initializes the display system
 void displayInit() {
-    //lcd.begin(16, 2);
     lcd.setContrast(contrastValue);
-
-
-    //lcd.clear();
-    delay(200);
     playBootAnim();
-    for (;;) {}
+
 }
 
 
@@ -23,17 +18,17 @@ void displayInit() {
 
 
 
-void printSpeed(byte speed) {
-    lcd.setCursor(0, 0);
-    if(getSpeedUnit()) {
-        lcd.print("current mph:");
-    }
-    else {
-        lcd.print("current kph:");
-    }
-    lcd.setCursor(0, 1);
-    lcd.print(speed);
-}
+// void printSpeed(byte speed) {
+//     lcd.setCursor(0, 0);
+//     if(getSpeedUnit()) {
+//         lcd.print("current mph:");
+//     }
+//     else {
+//         lcd.print("current kph:");
+//     }
+//     lcd.setCursor(0, 1);
+//     lcd.print(speed);
+// }
 
 
 // sets the display contrast to a specified value

@@ -84,7 +84,7 @@ void checkButtons() {
 
     if(btn1.wasPressed()) {
         toggleSpeedUnit();
-        printSpeed(getSpeed());
+        //printSpeed(getSpeed());
     }
 
     if(btn2.wasPressed()) {
@@ -136,27 +136,33 @@ void setLightMode(bool modeInput) {
 
 // sets the backlight to a specific brightness level, give it the level index you want (0-7)
 void setBrightness(uint8_t level) {
-    currentLevel = level;
-    analogWrite(BACKLIGHT_PIN, brightnessLevel[currentLevel]);
+    if(!autoBacklight) {
+        currentLevel = level;
+        analogWrite(BACKLIGHT_PIN, brightnessLevel[currentLevel]);
+    }
 }
 
 
 // increses the brightness level by 1, and returns the new level
 uint8_t incBrightness() {
-    if(currentLevel >= 0 && currentLevel < (brightnessLevels - 1)) {
-        currentLevel += 1;
+    if(!autoBacklight) {
+        if(currentLevel >= 0 && currentLevel < (brightnessLevels - 1)) {
+            currentLevel += 1;
+        }
+        setBrightness(currentLevel);
     }
-    setBrightness(currentLevel);
     return currentLevel;
 }
 
 
 // decreases the brightness level by 1, and returns the new level
 uint8_t decBrightness() {
-    if(currentLevel > 0 && currentLevel <= (brightnessLevels - 1)) {
-        currentLevel -= 1;
+    if(!autoBacklight) {
+        if(currentLevel > 0 && currentLevel <= (brightnessLevels - 1)) {
+            currentLevel -= 1;
+        }
+        setBrightness(currentLevel);
     }
-    setBrightness(currentLevel);
     return currentLevel;
 }
 

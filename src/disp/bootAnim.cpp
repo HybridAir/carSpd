@@ -16,7 +16,6 @@ void playBootAnim() {
 Flicker::Flicker() {
     randomSeed(analogRead(A0));                                                 // get a random seed for the rng
     rand = random(1, 4);                                                        // selected a random number between 1 and 4, this determines the flicker amount/duration
-    //finished = false;
 }
 
 
