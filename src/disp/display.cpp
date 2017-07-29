@@ -1,11 +1,15 @@
 // handles all general and low-level display related tasks
 #include "disp/display.hpp"
 
+speedView spdView;
+
 //initializes the display system
 void displayInit() {
     lcd.setContrast(contrastValue);
-    playBootAnim();
-
+    //playBootAnim();
+    for(;;) {
+        spdView.run();
+    }
 }
 
 

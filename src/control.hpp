@@ -29,13 +29,13 @@
 #define CONTRAST_ADDRESS   2
 #define LIGHTMODE_ADDRESS   3
 #define LIGHTLEVEL_ADDRESS   4
-byte defaultEepromVals[6] = {0x00, 0x00, 0x1e, 0x00, 0x00};
+static byte defaultEepromVals[6] = {0x00, 0x00, 0x1e, 0x00, 0x00};
 
 
 #define CONTRASTMAX     48
 #define CONTRASTMIN     16
 
-static uint8_t currentView = 0;       // the currently displayed view index
+//static uint8_t currentView = 0;       // the currently displayed view index
 
 
 // backlight control variables

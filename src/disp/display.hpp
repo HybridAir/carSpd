@@ -6,6 +6,8 @@
 #include "disp/big.hpp"
 #include "disp/bootAnim.hpp"
 
+#include "disp/views/speedView.hpp"
+
 extern ST7032 lcd;
 
 #define CONTRASTMAX     48

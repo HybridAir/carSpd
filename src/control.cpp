@@ -76,9 +76,13 @@ void initReadEeprom() {
 
 // reads button states and does things as necessary
 void checkButtons() {
-    btn1.read();
-    btn2.read();
-    btn3.read();
+
+
+    //TODO: hand off all buttons except for the menu button to the primary view system
+
+    // btn1.read();
+    // btn2.read();
+    // btn3.read();
     btn4.read();
 
 

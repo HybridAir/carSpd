@@ -1,3 +1,4 @@
+// handles all car input and conversion stuff
 #include "carInput.hpp"
 
 
@@ -31,7 +32,7 @@ uint8_t getSpeed() {
 }
 
 
-// returns the car's illumination input as an 8-bit value (0-255) 
+// returns the car's illumination input as an 8-bit value (0-255)
 uint8_t getCarBrightness() {
     return map(analogRead(A0), 0, 1023, 0, 255);
 }
@@ -81,7 +82,7 @@ void betterSpeed() {
             speedOut = roundedMph;
         }
 
-        printSpeed(getSpeed());
+        //printSpeed(getSpeed());
         previousMph = roundedMph;                                               // Set previousMph for use in next loop
         lastSpeedTime = millis();
         bitSet(TCCR1B, CS12);                                                   // start counting pulses
