@@ -52,8 +52,8 @@ void betterSpeed() {
 
         updateSpeedNow = false;
 
-        //float mph = (count/convertMph)*10;                                      // Convert pulse count into mph.
-        float mph = 650;         // test
+        float mph = (count/convertMph)*10;                                      // Convert pulse count into mph.
+        //float mph = 650;         // test
         if(!isMph) {
             mph = mph * 1.609;                                                  // and then convert it to kph if necessary
         }

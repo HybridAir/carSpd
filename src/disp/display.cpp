@@ -6,33 +6,14 @@ speedView spdView;
 //initializes the display system
 void displayInit() {
     lcd.setContrast(contrastValue);
-    //playBootAnim();
-    for(;;) {
-        spdView.run();
-    }
+    playBootAnim();
 }
 
 
 
-
-
-
-
-
-
-
-
-// void printSpeed(byte speed) {
-//     lcd.setCursor(0, 0);
-//     if(getSpeedUnit()) {
-//         lcd.print("current mph:");
-//     }
-//     else {
-//         lcd.print("current kph:");
-//     }
-//     lcd.setCursor(0, 1);
-//     lcd.print(speed);
-// }
+void displayUpdate() {
+    spdView.run();
+}
 
 
 // sets the display contrast to a specified value

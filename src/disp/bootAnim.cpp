@@ -191,10 +191,10 @@ void playNumbers() {
             // run the first position flicker starting at frame 1
             if(frame > 1) {
                 if(num0.run()) {
-                    drawBigNum(0, '1');
+                    drawBigNum(-1, '1');
                 }
                 else {
-                    clearBigNum(0);
+                    clearBigNum(-1);
                 }
             }
 
@@ -217,12 +217,12 @@ void playNumbers() {
 
     // the second part, transitioning to the final speedometer display
     delay(500);
-    clearBigNum(0);
+    clearBigNum(-1);
     clearBigNum(3);
     clearBigNum(7);
     delay(40);
-    drawBigNum(7, '0');
-    delay(50);
-    lcd.setCursor(12, 0);
-    lcd.print("KM/H");
+    // drawBigNum(7, '0');
+    // delay(50);
+    // lcd.setCursor(12, 0);
+    // lcd.print("KM/H");
 }

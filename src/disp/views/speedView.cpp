@@ -50,8 +50,8 @@ void speedView::run() {
 void speedView::monitorButtons() {
     //check all the given buttons for changes
     btn1.read();
-    btn2.read();
-    btn3.read();
+    //btn2.read();
+    //btn3.read();
 
     if(btn1.wasPressed()) {
         toggleSpeedUnit();
@@ -60,8 +60,6 @@ void speedView::monitorButtons() {
     // button 1 toggles the speed unit
     // buttons 2 and 3 do nothing yet
     // button 4 is the menu button, and we can't do anything with it here
-
-    // if any button was pressed, updateNow = true
 }
 
 
