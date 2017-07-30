@@ -46,9 +46,20 @@ uint8_t drawBigNum(int8_t x, uint8_t theChar) {
 // draws a big number starting at the specified offset, at the specified place
 // meant for displaying multiple numbers
 
-void clearBigNum(uint8_t x) {
-    lcd.setCursor(x, 0);
-    lcd.print("   ");
-    lcd.setCursor(x, 1);
-    lcd.print("   ");
+void clearBigNum(int8_t x) {
+    uint8_t length = 3;
+    if(x < 0) {
+        length = length - abs(x);
+        x = 0;
+    }
+    // lcd.setCursor(x, 0);
+    // lcd.print("   ");
+    // lcd.setCursor(x, 1);
+    // lcd.print("   ");
+    for(uint8_t i = 0; i <= 1; i++) {
+        lcd.setCursor(x, i);
+        for(uint8_t j = 0; j < length; j++) {
+            lcd.write(' ');
+        }
+    }
 }

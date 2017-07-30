@@ -97,6 +97,6 @@ static const uint8_t gBigFontAsciiTable[] PROGMEM    =   {
 
 uint8_t drawBigNum(int8_t x, uint8_t theChar);
 void writeBigNumChars();
-void clearBigNum(uint8_t x);
+void clearBigNum(int8_t x);
 
 #endif
