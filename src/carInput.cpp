@@ -17,6 +17,8 @@ void toggleSpeedUnit() {
     else {
         isMph = true;
     }
+
+    updateSpeedNow = true;
 }
 
 
@@ -43,12 +45,15 @@ uint8_t getCarBrightness() {
 void betterSpeed() {
 
     //sample the speed for samplePeriod, and only calculate after that samplePeriod has elapsed
-    if(millis() - lastSpeedTime >= samplePeriod) {
+    if(millis() - lastSpeedTime >= samplePeriod || updateSpeedNow) {
         TCCR1B = 0;                                                             // stop counting VSS pulses
         uint16_t count = TCNT1;                                                 // Store the hardware VSS pulse counter in a variable
         TCNT1 = 0;                                                              // Reset hardware VSS pulse counter to zero
 
-        float mph = (count/convertMph)*10;                                      // Convert pulse count into mph.
+        updateSpeedNow = false;
+
+        //float mph = (count/convertMph)*10;                                      // Convert pulse count into mph.
+        float mph = 650;         // test
         if(!isMph) {
             mph = mph * 1.609;                                                  // and then convert it to kph if necessary
         }
@@ -71,18 +76,13 @@ void betterSpeed() {
             roundedMph = 0;
         }
 
-        // Don't display mph readings that are more than 50 mph higher than the
-        // previous reading because it is probably a spurious reading.
-        // Accelerating 60mph in one second is rocketship fast so it is probably
-        // not real.
-
+        // check for bad readings
         if((roundedMph - previousMph) > 60) {
             speedOut = previousMph;
         }else{
             speedOut = roundedMph;
         }
 
-        //printSpeed(getSpeed());
         previousMph = roundedMph;                                               // Set previousMph for use in next loop
         lastSpeedTime = millis();
         bitSet(TCCR1B, CS12);                                                   // start counting pulses

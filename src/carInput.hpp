@@ -13,5 +13,6 @@ static uint8_t previousMph;
 static uint8_t speedOut = 0;
 static unsigned long lastSpeedTime = 0;
 static bool isMph = false;
+static bool updateSpeedNow = false;
 
 #endif
