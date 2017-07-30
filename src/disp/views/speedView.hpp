@@ -8,6 +8,7 @@
 #include "control.hpp"
 
 #define UPDATERATE 250
+#define SPEEDNUMPLACES 3
 
 extern ST7032 lcd;
 extern Button btn1;
@@ -24,15 +25,16 @@ class speedView {
         void monitorButtons();
         void updateDisplay();
         void drawSpeed();
+        void drawUnit();
 
-        uint8_t currentSpeed;
+        uint8_t currentSpeed = 0;
         uint8_t prevSpeed;
-        bool currentUnit;
+        bool currentUnitMph;
         bool prevUnit;
         uint16_t lastUpdate;
         bool updateNow = false;
         bool dataChanged = true;
-        char speedDigits[3];
+        char speedDigits[SPEEDNUMPLACES];
 };
 
 #endif
