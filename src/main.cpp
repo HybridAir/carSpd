@@ -16,7 +16,7 @@ void setup() {
 
 
 void loop() {
-    betterSpeed();
+    //betterSpeed();
     monitorIO();
     displayUpdate();
 }
