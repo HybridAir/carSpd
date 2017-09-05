@@ -81,12 +81,12 @@ void playLogo() {
                     }
 
                     if(subtitle.run()) {
-                        lcd.setCursor(7, 1);
-                        lcd.print("HybridAir");
+                        lcd.setCursor(5, 1);
+                        lcd.print("pre-release");
                     }
                     else {
-                        lcd.setCursor(7, 1);
-                        for(uint8_t i = 0; i < 9; i++) {
+                        lcd.setCursor(5, 1);
+                        for(uint8_t i = 0; i < 11; i++) {
                             lcd.print(" ");
                         }
                     }
