@@ -82,8 +82,8 @@ static const uint8_t gBigFontShapeTable[] PROGMEM   =   {
 
 static const uint8_t gBigFontAsciiTable[] PROGMEM    =   {
     0,  1,  2,  3,  4,  5,                                                      //	0x30	0
-    //1,  2,  32, 32, 5,  32,                                                     //	0x31	1
-    32, 1,  2,  32, 32, 5,                                                     //	0x31	1
+    //32, 1,  2,  32, 32, 5,                                                     //	0x31	1
+    32, 32,  2,  32, 32, 5,                                                     //	0x31	1
     6,  6,  2,  3,  7,  7,                                                      //	0x32	2
     6,  6,  2,  7,  7,  5,                                                      //	0x33	3
     3,  4,  2,  32, 32, 5,                                                      //	0x34	4
