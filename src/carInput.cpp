@@ -7,10 +7,10 @@ void carInit() {
     TCCR1A = 0;                                                                 // Configure hardware counter
     TCNT1 = 0;                                                                  // Reset hardware counter to zero
 
-    for (int thisReading = 0; thisReading < numReadings; thisReading++) {
-        readings2[thisReading] = 0;
-      }
-Serial.print("beep1");
+//     for (int thisReading = 0; thisReading < numReadings; thisReading++) {
+//         readings2[thisReading] = 0;
+//       }
+// Serial.print("beep1");
 
 }
 
@@ -47,124 +47,69 @@ uint8_t getCarBrightness() {
 
 
 
-// calculates the vehicle speed over the last samplePeriod (usually a second), run this often
-// it uses timer 1, which is on arduino uno pin 5, connect it to your car's VSS output
+// calculates the vehicle speed using the data gathered over the past samplePeriod (500ms recommended)
+// it uses timer 1 on arduino uno pin 5, connect it to your car's VSS signal line
 void betterSpeed() {
 
-    //sample the speed for samplePeriod, and only calculate after that samplePeriod has elapsed
+    // if it has been samplePeriod since the last computation, or an update is being forced now
     if(millis() - lastSpeedTime >= samplePeriod || updateSpeedNow) {
         TCCR1B = 0;                                                             // stop counting VSS pulses
         uint16_t count = TCNT1;                                                 // Store the hardware VSS pulse counter in a variable
         TCNT1 = 0;                                                              // Reset hardware VSS pulse counter to zero
-
-        if(firstRun) {
-            firstRun = false;
-            count = 0;
-            for (int thisReading = 0; thisReading < numReadings; thisReading++) {
-    readings2[thisReading] = 0;
-  }
-            Serial.print("beep2");
-        }
-
-        Serial.print("raw: ");
-        Serial.print(count, DEC);
-
-
-        // float diff = abs(average - count);
-        //
-        // if(diff > 2) {
-        //     Serial.print("beep3");
-        //     for (int thisReading = 0; thisReading < numReadings; thisReading++) {
-        // readings2[thisReading] = count;
-        // }
-        // }
-
-
-        total = total - readings2[readIndex];
- readings2[readIndex] = (float)count;
- // add the reading to the total:
- total = total + readings2[readIndex];
- // advance to the next position in the array:
- readIndex = readIndex + 1;
-
- // if we're at the end of the array...
- if (readIndex >= numReadings) {
-   // ...wrap around to the beginning:
-   readIndex = 0;
- }
-
- // calculate the average:
- average = total / numReadings;
-
-
-
-//uint16_t diff = (uint16_t)average + 3;
-//float countout = (float)count;
-
- // if (count > diff) {
- //     for (int thisReading = 0; thisReading < numReadings; thisReading++) {
- // readings2[thisReading] = countout;
- // }
- //     Serial.print("beep3");
- // }
-
-//  if (count > (average + 3)) {
-//          for (int thisReading = 0; thisReading < numReadings; thisReading++) {
-//      readings2[thisReading] = count;
-//      }
-// Serial.print("beep3");
-//  }
-
-
-        Serial.print(" avg: ");
-        Serial.println(average);
+        uint16_t countOut = count * 10;                                         // multiply the VSS value by 10 to get one "decimal" of accuracy
 
         updateSpeedNow = false;
 
+        if(firstRun) {
+            firstRun = false;
+            countOut = 0;                                                       // assume the vehicle is not moving yet, sets the speed value to zero
 
-
-
-        float mph = (average/convertMph)*10;                                      // Convert pulse count into mph.
-        //float mph = (count/convertMph)*10;                                      // Convert pulse count into mph.
-        //float mph = 650;         // test
-        if(!isMph) {
-            mph = mph * 1.6093;                                                  // and then convert it to kph if necessary
+            // initalize the rolling average to zero
+            for (int thisReading = 0; thisReading < numReadings; thisReading++) {
+                readings2[thisReading] = 0;
+            }
         }
-        uint16_t imph = (uint16_t) mph;                                         // Cast to integer. 10x allows retaining 10th of mph resolution.
-        //it converts 659.46516 to 659
 
-        Serial.print("spd: ");
-        Serial.println(imph);
+        // stabilize the VSS values using a rolling average
+        total = total - readings2[readIndex];                                   // remove the oldest reading from the running total
+        readings2[readIndex] = countOut;                                        // add the newest VSS value to the array
+        total = total + readings2[readIndex];                                   // add the value we just added to the running total
+        readIndex++;                                                            // go to the next array index to prepare for the next update
+        if (readIndex >= numReadings) {
+            readIndex = 0;                                                      // rollback to the beginning if needed
+        }
+        average = total / numReadings;                                          // calculate the average
 
-        uint16_t x = imph / 10;     //remove the "decimal"
-        uint16_t y = imph % 10;     //check the "decimal" to see if the output needs rounding
+
+        // the following resets the average if the speed is changing quickly, past a specific threshold
+        // this is to help prevent lag caused by the VSS value averaging
+        // this codes needs to be after the average calc above or else gcc screams for no discernible reason
+        int16_t diff = average - countOut;                                      // calculate the difference between the average and the newest VSS value
+        if(abs(diff) > 10) {                                                    // if the absolute difference is greater than the threshold
+            // make the average the new VSS value instead of what it was before
+            for (uint8_t thisReading = 0; thisReading < numReadings; thisReading++) {
+                readings2[thisReading] = countOut;
+            }
+            average = countOut;
+            total = countOut*numReadings;
+        }
+
+        uint16_t mph = average/convertMph;                                      // convert the average VSS value to mph, with an extra "decimal" for accuracy (ie 65mph = 650)
+        if(!isMph) {                                                            // convert to kph if needed
+            mph = mph * 1.6093;
+        }
+
+        uint16_t x = mph / 10;                                                  //remove the "decimal"
+        uint16_t y = mph % 10;                                                  //check the "decimal" to see if the output needs rounding
 
         // Round to whole mile per hour
-        if(y >= 5) {        //if the "decimal" (the 9 in 659) is greater/equal to 5, round up
+        if(y >= 5) {                                                            //if the "decimal" (the 9 in 659) is greater/equal to 5, round up
             roundedMph = x + 1;
         }else{
             roundedMph = x;
         }
 
-        //roundedMph = x;
-
-        //If mph is less than 1mph just show 0mph.
-        //Readings of 0.9mph or lower are some what erratic and can
-        //occasionally be triggered by electrical noise.
-        if(x < 1) {
-            roundedMph = 0;
-        }
-
-        // check for bad readings
-        // if((roundedMph - previousMph) > 60) {
-        //     speedOut = previousMph;
-        // }else{
-        //     speedOut = roundedMph;
-        // }
-
-        speedOut = roundedMph;
-
-        //previousMph = roundedMph;                                               // Set previousMph for use in next loop
+        speedOut = roundedMph;                                                  // done, that's the final speed
         lastSpeedTime = millis();
         bitSet(TCCR1B, CS12);                                                   // start counting pulses
         bitSet(TCCR1B, CS11);                                                   // Clock on rising edge

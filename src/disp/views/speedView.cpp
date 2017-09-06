@@ -24,8 +24,8 @@ void speedView::run() {
         lastUpdate = currentMillis;
         updateNow = false;
 
-        // get the current speed and compare it against the previous one
-        currentSpeed = getSpeed();
+        currentSpeed = getSpeed();                                              // get the current speed and compare it against the previous one
+
         if(currentSpeed != prevSpeed) {
             prevSpeed = currentSpeed;
             dataChanged = true;
@@ -85,6 +85,9 @@ void speedView::drawUnit() {
 // formats and draws the current speed to the LCD in big number form
 void speedView::drawSpeed() {
     if(currentSpeed == 0) {                                                     // don't need to do anything fancy if the speed is zero
+        // clear any possibly still displayed leading numbers (like if the vehicle was decelerating to a stop)
+        clearBigNum(-1);
+        clearBigNum(3);
         drawBigNum(7, '0');
     }
     else {

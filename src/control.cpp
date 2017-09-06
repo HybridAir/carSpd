@@ -80,10 +80,10 @@ void checkButtons() {
 
     //TODO: hand off all buttons except for the menu button to the primary view system
 
-    // btn1.read();
-     btn2.read();
+     //btn1.read();
+     //btn2.read();
      btn3.read();
-    //btn4.read();
+    btn4.read();
 
 
     // if(btn1.wasPressed()) {
@@ -91,7 +91,7 @@ void checkButtons() {
     //     //printSpeed(getSpeed());
     // }
 
-    if(btn2.wasPressed()) {
+    if(btn3.wasPressed()) {
         int out = incBrightness();
         EEPROM.writeByte(LIGHTLEVEL_ADDRESS, out);                  // set the contrast and save it
         //EEPROM.writeByte(CONTRAST_ADDRESS, incContrast());                      // set the contrast and save it
@@ -99,7 +99,7 @@ void checkButtons() {
         //Serial.println(out);
     }
 
-    if(btn3.wasPressed()) {
+    if(btn4.wasPressed()) {
         int out = decBrightness();
         EEPROM.writeByte(LIGHTLEVEL_ADDRESS, out);                  // set the contrast and save it
         //EEPROM.writeByte(CONTRAST_ADDRESS, decContrast());                      // set the contrast and save it
