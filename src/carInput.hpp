@@ -12,17 +12,17 @@ const float convertMph = (float)pulsesPerMile/7200.0;                           
 static uint8_t roundedMph;
 static uint8_t previousMph;
 static uint8_t speedOut = 0;
-static unsigned long lastSpeedTime = 0;
+static uint32_t lastSpeedTime = 0;
 static bool isMph = false;
 static bool updateSpeedNow = false;
 static bool firstRun = true;
 
-
-//rolling average stuff
-static const uint8_t numReadings = 8;
-static uint16_t readings2[numReadings];                                         // the readings from the analog input
-static uint8_t readIndex = 0;                                                   // the index of the current reading
-static int16_t total = 0;                                                       // the running total
-static uint16_t average = 0;                                                    // the average
+static volatile bool prevVssState = false;     // tracks the previous vss pin state
+static volatile bool recordingVss = false;     // vss pulse time recording state
+static volatile uint32_t lastVSSTime = 0;     // the time that the vss pin went high from low
+static volatile uint32_t VSSTimeDiff = 0;
+static volatile uint32_t VSSPulses = 0;       // used for tracking the number of vss pulses, for distance monitoring and vss pin state changes
+static uint32_t prevVssPulses = 0;
+static uint32_t lastPulseTime = 0;
 
 #endif

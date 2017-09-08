@@ -3,14 +3,37 @@
 
 
 void carInit() {
-    // prepare the VSS input hardware counter thing
-    TCCR1A = 0;                                                                 // Configure hardware counter
-    TCNT1 = 0;                                                                  // Reset hardware counter to zero
 
-//     for (int thisReading = 0; thisReading < numReadings; thisReading++) {
-//         readings2[thisReading] = 0;
-//       }
-// Serial.print("beep1");
+    pinMode(5, INPUT);                                                          // set pin to input
+
+    // enable pin change interrupt on pcint2
+    // pcint2 because that's where pin PD5, the vss pin, lives
+    PCICR |= (1<<PCIE2);
+    PCMSK2 |= (1<<PCINT21);
+}
+
+
+
+ISR(PCINT2_vect) {
+
+    bool currentVssState = PIND & _BV(PD5);                                     // get the current state of the vss pin
+
+    if (currentVssState && !prevVssState) {                                     // if the vss pin is high, and was previously low
+        if(!recordingVss) {                                                     // if the vss pulse time is not yet being recorded
+            // this means that a new vss pulse was just recieved, and needs to be timed
+            lastVSSTime = micros();                                             // record the time the vss pin just now went high
+            recordingVss = true;                                                // we are recording this vss pulse time now
+        }
+        else {                                                                  // if the vss pusle time is currently being recorded
+            // this means that the vss pin was just pulsed, signalling the end of the previous vss pulse
+            VSSTimeDiff = micros() - lastVSSTime;                               // subtract the current time by the time the last vss pulse started, this gets you the duration of the last vss pulse
+            VSSPulses++;
+            recordingVss = false;                                               // we are finally done recording the last vss pulse time
+        }
+    }
+
+
+    prevVssState = currentVssState;
 
 }
 
@@ -46,55 +69,20 @@ uint8_t getCarBrightness() {
 }
 
 
-
 // calculates the vehicle speed using the data gathered over the past samplePeriod (500ms recommended)
 // it uses timer 1 on arduino uno pin 5, connect it to your car's VSS signal line
 void betterSpeed() {
 
-    // if it has been samplePeriod since the last computation, or an update is being forced now
-    if(millis() - lastSpeedTime >= samplePeriod || updateSpeedNow) {
-        TCCR1B = 0;                                                             // stop counting VSS pulses
-        uint16_t count = TCNT1;                                                 // Store the hardware VSS pulse counter in a variable
-        TCNT1 = 0;                                                              // Reset hardware VSS pulse counter to zero
-        uint16_t countOut = count * 10;                                         // multiply the VSS value by 10 to get one "decimal" of accuracy
+    if (VSSPulses != prevVssPulses) {                                           // if the vss pulse count just changed
+        // that means a new vss pulse time was just recorded
+        // go use it to calculate the vehicle's current speed
+        prevVssPulses = VSSPulses;                                              // record the new vss pulse count
 
-        updateSpeedNow = false;
+        uint32_t speed = 1000000000 / (VSSTimeDiff/10);
+        //float div = 4000.0/3600;
+        float div = (pulsesPerMile*1000.0)/3600;                                // the amount of vss pulses in one second, with 5 "decimals" of accuracy
+        uint16_t mph = speed / (uint16_t)div;
 
-        if(firstRun) {
-            firstRun = false;
-            countOut = 0;                                                       // assume the vehicle is not moving yet, sets the speed value to zero
-
-            // initalize the rolling average to zero
-            for (int thisReading = 0; thisReading < numReadings; thisReading++) {
-                readings2[thisReading] = 0;
-            }
-        }
-
-        // stabilize the VSS values using a rolling average
-        total = total - readings2[readIndex];                                   // remove the oldest reading from the running total
-        readings2[readIndex] = countOut;                                        // add the newest VSS value to the array
-        total = total + readings2[readIndex];                                   // add the value we just added to the running total
-        readIndex++;                                                            // go to the next array index to prepare for the next update
-        if (readIndex >= numReadings) {
-            readIndex = 0;                                                      // rollback to the beginning if needed
-        }
-        average = total / numReadings;                                          // calculate the average
-
-
-        // the following resets the average if the speed is changing quickly, past a specific threshold
-        // this is to help prevent lag caused by the VSS value averaging
-        // this codes needs to be after the average calc above or else gcc screams for no discernible reason
-        int16_t diff = average - countOut;                                      // calculate the difference between the average and the newest VSS value
-        if(abs(diff) > 10) {                                                    // if the absolute difference is greater than the threshold
-            // make the average the new VSS value instead of what it was before
-            for (uint8_t thisReading = 0; thisReading < numReadings; thisReading++) {
-                readings2[thisReading] = countOut;
-            }
-            average = countOut;
-            total = countOut*numReadings;
-        }
-
-        uint16_t mph = average/convertMph;                                      // convert the average VSS value to mph, with an extra "decimal" for accuracy (ie 65mph = 650)
         if(!isMph) {                                                            // convert to kph if needed
             mph = mph * 1.6093;
         }
@@ -110,9 +98,11 @@ void betterSpeed() {
         }
 
         speedOut = roundedMph;                                                  // done, that's the final speed
-        lastSpeedTime = millis();
-        bitSet(TCCR1B, CS12);                                                   // start counting pulses
-        bitSet(TCCR1B, CS11);                                                   // Clock on rising edge
+        lastPulseTime = millis();
+    }
+    if((millis() - lastPulseTime) >= 1000) {                                    //if the time since the last vss pulse is over 1000 ms
+        // TODO: make this calculate depending on the vss pulses per mile value
+        speedOut = 0;                                                           // force speed to zero
     }
 }
 
